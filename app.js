@@ -118,41 +118,66 @@ const inputNode1 = document.querySelector('.input2-width')
 const inputNode2 = document.querySelector('.input2-height')
 const btnNode = document.querySelector('.button2')
 
-const useRequest = (url, callback) => {
+const useRequest = (url) => {
     return fetch(url)
         .then((response) => {
-            console.log(response.json)
             return response.json
         })
-        .then((json) => { //Зачем ?
-            if(callback) {
-                callback(json)
-            }
-            return json
+        .then((json) => {
+            const dataApi = json
+            dataApi.forEach(item => {
+                const cardBlock = `
+                        <div class="card">
+                            <img class="card__img" src="${item.download_url}">
+                        </div>
+                        `
+                resultNode.innerHTML = cardBlock
+            })
         })
         .catch(() => {
-            console.log('error') // Исправить на алерт
+            console.log('error')
         })
 }
 
-function displayResult(apiData) {
-    // let cards = ''
+// function displayResult(apiData) {
+//     // let cards = ''
 
-    apiData.forEach(item => {
-        const cardBlock = `
-        <div class="card">
-            <img class="card__img" src="${item}">
-        </div>
-        `
-        // cards += cardBlock
-        resultNode.innerHTML = cardBlock
-    })
-}
+//     apiData.forEach(item => {
+//         const cardBlock = `
+//         <div class="card">
+//             <img class="card__img" src="${item.download_url}">
+//         </div>
+//         `
+//         // cards += cardBlock
+//         resultNode.innerHTML = cardBlock
+//     })
+// }
 
-btnNode.addEventListener('click', async() => {
-    if(inputNode1.value < 100 || inputNode1.value > 300 && inputNode2.value < 100 || inputNode2.value > 300) {
-resultNode.innerHTML = 'одно из чисел вне диапазона от 100 до 300'
+btnNode.addEventListener('click', async () => {
+    if (inputNode1.value < 100 || inputNode1.value > 300 && inputNode2.value < 100 || inputNode2.value > 300) {
+        resultNode.innerHTML = 'одно из чисел вне диапазона от 100 до 300'
     } else {
-        await useRequest(`https://picsum.photos/${inputNode1.value}/${inputNode2.value}`, displayResult)
+        await useRequest(`https://picsum.photos/${inputNode1.value}/${inputNode2.value}`)
     }
 })
+
+// btnNode.addEventListener('click', () => {
+//     fetch('https://picsum.photos/v2/list/?limit=5')
+//         .then(response => {
+//             const result = response.json();
+//             return result;
+//         })
+//         .then(json => {
+//             const apiData = json
+//             apiData.forEach(item => {
+//                 const cardBlock = `
+//                 <div class="card">
+//                     <img class="card__img" src="${item.download_url}">
+//                 </div>
+//                 `
+//                 // cards += cardBlock
+//                 resultNode.innerHTML = cardBlock
+//             })
+//         })
+//         .catch(() => { console.log('error') })
+// })
