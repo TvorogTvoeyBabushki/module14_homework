@@ -1,0 +1,9 @@
+.card__img {
+    display: block;
+    width: 300px;
+    height: 200px;
+}
+
+input {
+    width: 200px;
+}
